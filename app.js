@@ -708,13 +708,13 @@ function calculatePetYield() {
         document.getElementById('pvp-result').style.display = 'none';
     }
 
-    // 计算黑奴成本模式（自动计算，无需用户输入）
+    // 计算矿机成本模式（自动计算，无需用户输入）
     if (goldCupExchange && goldCupExchange > 0) {
         // 获取出租模式的收益数据，如果未填写则使用默认值45
         const rentalIncome = parseFloat(document.getElementById('rental-income').value) || 45;
-        // 自动计算黑奴成本：25 + (1750 + 2*rentalIncome*7) / 金杯兑换灵石数量
+        // 自动计算矿机成本：25 + (1750 + 2*rentalIncome*7) / 金杯兑换灵石数量
         const slaveCost = 25 + (1750 + 2 * rentalIncome * 7) / goldCupExchange;
-        // 计算合适的黑奴价格：黑奴成本 ÷ 2 × 金杯最低价
+        // 计算合适的矿机价格：矿机成本 ÷ 2 × 金杯最低价
         const suitableSlavePrice = (slaveCost / 2) * goldCupPrice;
         displaySlaveResult(slaveCost, suitableSlavePrice, goldCupPrice, goldCupExchange);
     } else {
@@ -782,39 +782,44 @@ function displayModeResult(mode, yieldRate, formula, paybackDays) {
     resultDiv.style.display = 'block';
 }
 
-// 显示黑奴成本结果
+// 显示矿机成本结果
 function displaySlaveResult(slaveCost, suitableSlavePrice, goldCupPrice, goldCupExchange) {
     const resultDiv = document.getElementById('slave-result');
     const costDisplayElement = document.getElementById('slave-cost-display');
     const suitablePriceElement = document.getElementById('slave-suitable-price');
-    const costFormulaTextElement = document.getElementById('slave-cost-formula-text');
-    const costFormulaNumbersElement = document.getElementById('slave-cost-formula-numbers');
-    const priceFormulaTextElement = document.getElementById('slave-price-formula-text');
-    const priceFormulaNumbersElement = document.getElementById('slave-price-formula-numbers');
+    const step1TextElement = document.getElementById('slave-step1-text');
+    const step1NumbersElement = document.getElementById('slave-step1-numbers');
+    const step2TextElement = document.getElementById('slave-step2-text');
+    const step2NumbersElement = document.getElementById('slave-step2-numbers');
+    const step3TextElement = document.getElementById('slave-step3-text');
+    const step3NumbersElement = document.getElementById('slave-step3-numbers');
 
-    // 设置成本显示
-    costDisplayElement.textContent = slaveCost.toFixed(2) + '元';
-
-    // 设置合适的黑奴价格显示
-    suitablePriceElement.textContent = suitableSlavePrice.toFixed(2) + '元';
-
-    // 设置组合公式显示（四行交替排列：文字-数字-文字-数字）
+    // 获取出租收益和市场数据
     const rentalIncome = parseFloat(document.getElementById('rental-income').value) || 45;
-    
-    // 第一行：成本文字公式
-    const costFormulaText = `成本=繁育所需金杯+(繁育所需灵石+蛋孵化时间内应收益灵石)÷金杯可兑换灵石最低价`;
-    // 第二行：成本数字公式
-    const costFormulaNumbers = `25+(1750+2×${rentalIncome}×7)÷${goldCupExchange}=${slaveCost.toFixed(2)}金杯`;
-    // 第三行：推荐价格文字公式
-    const priceFormulaText = `推荐价格=成本÷2×金杯最低价`;
-    // 第四行：推荐价格数字公式
-    const priceFormulaNumbers = `${slaveCost.toFixed(2)}÷2×${goldCupPrice}=${suitableSlavePrice.toFixed(2)}元`;
-    
-    // 分别填充到四个独立的元素中
-    costFormulaTextElement.textContent = costFormulaText;
-    costFormulaNumbersElement.textContent = costFormulaNumbers;
-    priceFormulaTextElement.textContent = priceFormulaText;
-    priceFormulaNumbersElement.textContent = priceFormulaNumbers;
+    const eggCost = rentalIncome * 2 * 7; // 630灵石
+    const totalSpirit = 1750 + eggCost; // 2380灵石
+    const spiritToGoldCup = (totalSpirit / goldCupExchange).toFixed(2); // 28.5金杯
+    const totalGoldCups = (parseFloat(spiritToGoldCup) + 25).toFixed(2); // 53.5金杯
+    const costPerMachine = (parseFloat(totalGoldCups) / 2).toFixed(2); // 26.75金杯
+
+    // 设置矿机生产成本显示（单个矿机成本 = 总金杯数 ÷ 2）
+    costDisplayElement.textContent = costPerMachine + '金杯';
+
+    // 设置合适的矿机价格显示（含税价格 = 不含税价格 ÷ 0.94）
+    const suitableSlavePriceWithTax = suitableSlavePrice / 0.94;
+    suitablePriceElement.textContent = suitableSlavePriceWithTax.toFixed(2) + '元';
+
+    // 第一行：2只0次宠物繁育2次的说明
+    step1TextElement.textContent = '2只0次宠物繁育2次消耗1750灵石+25个金杯+7天时间，变为2个0次宠物+2个矿机';
+    step1NumbersElement.textContent = '';
+
+    // 第二行：蛋的成本计算
+    step2TextElement.textContent = `2个蛋7天时间成本：${rentalIncome}灵石*2只*7天=${eggCost}灵石`;
+    step2NumbersElement.textContent = `(1750+${eggCost})÷${goldCupExchange}=${spiritToGoldCup}金杯；${spiritToGoldCup}金杯+25金杯=2个矿机`;
+
+    // 第三行：最终价格计算（公式区域显示不含税价格）
+    step3TextElement.textContent = '矿机成本=总金杯数÷2×金杯最低价';
+    step3NumbersElement.textContent = `(${spiritToGoldCup}+25)÷2=${costPerMachine}金杯*${goldCupPrice}元=${suitableSlavePrice.toFixed(2)}元`;
 
     // 显示结果区域
     resultDiv.style.display = 'block';
@@ -929,7 +934,7 @@ function loadMarketData() {
             document.getElementById('gold-cup-exchange').value = goldCupExchange;
             document.getElementById('gold-cup-exchange').placeholder = goldCupExchange;
             
-            // 自动计算黑奴成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
+            // 自动计算矿机成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
             const slaveCost = 25 + (1750 + 2 * 630) / parseFloat(goldCupExchange);
             document.getElementById('slave-cost').value = slaveCost.toFixed(2);
             document.getElementById('slave-cost').placeholder = slaveCost.toFixed(2);
@@ -1037,7 +1042,7 @@ async function fetchGoldCupExchangeMinPrice() {
                     goldCupExchangeInput.value = minPrice;
                     goldCupExchangeInput.placeholder = minPrice;
                     
-                    // 自动计算黑奴成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
+                    // 自动计算矿机成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
                     const slaveCost = 25 + (1750 + 2 * 630) / minPrice;
                     const slaveCostInput = document.getElementById('slave-cost');
                     if (slaveCostInput) {
