@@ -1721,7 +1721,7 @@ main {
     font-weight: 900;
 }
 
-/* 黑奴模式提示文字 */
+/* 矿机模式提示文字 */
 .slave-mode-tip {
     font-size: 12px;
     color: var(--font-color-sub);
@@ -1791,7 +1791,7 @@ main {
     line-height: 1.5;
 }
 
-/* 黑奴公式特殊布局 - 四行交替显示 */
+/* 矿机公式特殊布局 - 四行交替显示 */
 .slave-formula-lines {
     display: flex;
     flex-direction: column;
@@ -1814,6 +1814,59 @@ main {
     line-height: 1.6;
     text-align: center;
     margin-bottom: 4px;
+}
+
+/* 矿机生产成本说明样式 */
+.slave-cost-explanation {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-left: 4px solid #2d8cf0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.explanation-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2d8cf0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.explanation-title::before {
+    content: 'ℹ️';
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.explanation-content {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.explanation-content p {
+    margin: 8px 0;
+    padding-left: 8px;
+}
+
+.explanation-content strong {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.explanation-content .highlight-formula {
+    background: #fff;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 2px solid #2d8cf0;
+    font-weight: 700;
+    color: #2d8cf0;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 14px;
 }
 
 .result-item {
