@@ -44,7 +44,7 @@
                         <div class="announcement-time">2026/5/11</div>
                     </div>
                     <div class="announcement-image">
-                        <img src="images/攻略.png" alt="攻略图片" class="clickable-image" onclick="showImagePreview(this.src)" style="cursor: pointer;">
+                        <img src="gonglue.jpg" alt="攻略图片" class="clickable-image" onclick="showImagePreview(this.src)" style="cursor: pointer;">
                     </div>
                     <div class="announcement-content">来自其他玩家投稿</div>
                     <span class="priority-badge normal">普通</span>
@@ -149,27 +149,29 @@
                     <button class="calculate-yield-btn uiverse-btn uiverse-btn-full uiverse-btn-lg" onclick="calculatePetYield()">计算收益率</button>
                 </div>
 
-                <!-- 黑奴成本结果 -->
+                <!-- 矿机成本结果 -->
                 <div id="slave-result" class="yield-result mode-result" style="display: none;">
                     <div class="result-header">
-                        <h4>黑奴价格推荐<span class="slave-mode-tip">（默认繁育两次）</span></h4>
+                        <h4>矿机生产成本<span class="slave-mode-tip">（默认繁育次数2/5及以上）</span></h4>
                     </div>
                     <div class="result-content">
                         <div class="result-item">
-                            <span class="result-label">黑奴成本</span>
+                            <span class="result-label">矿机生产成本</span>
                             <span class="result-value" id="slave-cost-display">0元</span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">推荐价格</span>
+                            <span class="result-label">推荐价格（含税）</span>
                             <span class="result-value" id="slave-suitable-price">0元</span>
                         </div>
                         <div class="result-item formula-item">
                             <span class="result-label">计算公式</span>
                             <div class="slave-formula-lines">
-                                <div class="formula-line" id="slave-cost-formula-text"></div>
-                                <div class="formula-line-numbers" id="slave-cost-formula-numbers"></div>
-                                <div class="formula-line" id="slave-price-formula-text"></div>
-                                <div class="formula-line-numbers" id="slave-price-formula-numbers"></div>
+                                <div class="formula-line" id="slave-step1-text"></div>
+                                <div class="formula-line-numbers" id="slave-step1-numbers"></div>
+                                <div class="formula-line" id="slave-step2-text"></div>
+                                <div class="formula-line-numbers" id="slave-step2-numbers"></div>
+                                <div class="formula-line" id="slave-step3-text"></div>
+                                <div class="formula-line-numbers" id="slave-step3-numbers"></div>
                             </div>
                         </div>
                     </div>
