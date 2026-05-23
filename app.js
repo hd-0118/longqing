@@ -708,6 +708,19 @@ function calculatePetYield() {
         document.getElementById('pvp-result').style.display = 'none';
     }
 
+    // 计算黑奴成本模式（自动计算，无需用户输入）
+    if (goldCupExchange && goldCupExchange > 0) {
+        // 获取出租模式的收益数据，如果未填写则使用默认值45
+        const rentalIncome = parseFloat(document.getElementById('rental-income').value) || 45;
+        // 自动计算黑奴成本：25 + (1750 + 2*rentalIncome*7) / 金杯兑换灵石数量
+        const slaveCost = 25 + (1750 + 2 * rentalIncome * 7) / goldCupExchange;
+        // 计算合适的黑奴价格：黑奴成本 ÷ 2 × 金杯最低价
+        const suitableSlavePrice = (slaveCost / 2) * goldCupPrice;
+        displaySlaveResult(slaveCost, suitableSlavePrice, goldCupPrice, goldCupExchange);
+    } else {
+        document.getElementById('slave-result').style.display = 'none';
+    }
+
     // 滚动到第一个结果区域
     const rentalResult = document.getElementById('rental-result');
     if (rentalResult && rentalResult.style.display === 'block') {
@@ -764,6 +777,44 @@ function displayModeResult(mode, yieldRate, formula, paybackDays) {
 
     badgeElement.textContent = badgeText;
     badgeElement.className = 'result-badge ' + badgeClass;
+
+    // 显示结果区域
+    resultDiv.style.display = 'block';
+}
+
+// 显示黑奴成本结果
+function displaySlaveResult(slaveCost, suitableSlavePrice, goldCupPrice, goldCupExchange) {
+    const resultDiv = document.getElementById('slave-result');
+    const costDisplayElement = document.getElementById('slave-cost-display');
+    const suitablePriceElement = document.getElementById('slave-suitable-price');
+    const costFormulaTextElement = document.getElementById('slave-cost-formula-text');
+    const costFormulaNumbersElement = document.getElementById('slave-cost-formula-numbers');
+    const priceFormulaTextElement = document.getElementById('slave-price-formula-text');
+    const priceFormulaNumbersElement = document.getElementById('slave-price-formula-numbers');
+
+    // 设置成本显示
+    costDisplayElement.textContent = slaveCost.toFixed(2) + '元';
+
+    // 设置合适的黑奴价格显示
+    suitablePriceElement.textContent = suitableSlavePrice.toFixed(2) + '元';
+
+    // 设置组合公式显示（四行交替排列：文字-数字-文字-数字）
+    const rentalIncome = parseFloat(document.getElementById('rental-income').value) || 45;
+    
+    // 第一行：成本文字公式
+    const costFormulaText = `成本=繁育所需金杯+(繁育所需灵石+蛋孵化时间内应收益灵石)÷金杯可兑换灵石最低价`;
+    // 第二行：成本数字公式
+    const costFormulaNumbers = `25+(1750+2×${rentalIncome}×7)÷${goldCupExchange}=${slaveCost.toFixed(2)}金杯`;
+    // 第三行：推荐价格文字公式
+    const priceFormulaText = `推荐价格=成本÷2×金杯最低价`;
+    // 第四行：推荐价格数字公式
+    const priceFormulaNumbers = `${slaveCost.toFixed(2)}÷2×${goldCupPrice}=${suitableSlavePrice.toFixed(2)}元`;
+    
+    // 分别填充到四个独立的元素中
+    costFormulaTextElement.textContent = costFormulaText;
+    costFormulaNumbersElement.textContent = costFormulaNumbers;
+    priceFormulaTextElement.textContent = priceFormulaText;
+    priceFormulaNumbersElement.textContent = priceFormulaNumbers;
 
     // 显示结果区域
     resultDiv.style.display = 'block';
@@ -838,11 +889,14 @@ function clearAllInputs() {
     document.getElementById('convoy-income').placeholder = '';
     document.getElementById('pvp-cups').value = '';
     document.getElementById('pvp-cups').placeholder = '';
+    document.getElementById('slave-cost').value = '';
+    document.getElementById('slave-cost').placeholder = '';
 
     // 隐藏所有结果区域
     document.getElementById('rental-result').style.display = 'none';
     document.getElementById('convoy-result').style.display = 'none';
     document.getElementById('pvp-result').style.display = 'none';
+    document.getElementById('slave-result').style.display = 'none';
 }
 
 // ==================== 市场数据管理功能 ====================
@@ -874,6 +928,11 @@ function loadMarketData() {
         if (goldCupExchange && goldCupExchange !== '--') {
             document.getElementById('gold-cup-exchange').value = goldCupExchange;
             document.getElementById('gold-cup-exchange').placeholder = goldCupExchange;
+            
+            // 自动计算黑奴成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
+            const slaveCost = 25 + (1750 + 2 * 630) / parseFloat(goldCupExchange);
+            document.getElementById('slave-cost').value = slaveCost.toFixed(2);
+            document.getElementById('slave-cost').placeholder = slaveCost.toFixed(2);
         }
     }
 }
@@ -977,6 +1036,14 @@ async function fetchGoldCupExchangeMinPrice() {
                 if (goldCupExchangeInput) {
                     goldCupExchangeInput.value = minPrice;
                     goldCupExchangeInput.placeholder = minPrice;
+                    
+                    // 自动计算黑奴成本：25 + (1750 + 2*630) / 金杯兑换灵石数量
+                    const slaveCost = 25 + (1750 + 2 * 630) / minPrice;
+                    const slaveCostInput = document.getElementById('slave-cost');
+                    if (slaveCostInput) {
+                        slaveCostInput.value = slaveCost.toFixed(2);
+                        slaveCostInput.placeholder = slaveCost.toFixed(2);
+                    }
                 }
             }
             
