@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BaByMoN打金计算器 - 龙清公会</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="uiverse-buttons.css">
+    <title>信息发布平台 - 用户端</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/uiverse-buttons.css">
 </head>
 <body>
 <!-- Uiverse.io 午夜星空背景 -->
@@ -44,7 +44,7 @@
                         <div class="announcement-time">2024/5/11</div>
                     </div>
                     <div class="announcement-image">
-                        <img src="gonglue.jpg" alt="攻略图片" class="clickable-image" onclick="showImagePreview(this.src)" style="cursor: pointer;">
+                        <img src="images/攻略.png" alt="攻略图片" class="clickable-image" onclick="showImagePreview(this.src)" style="cursor: pointer;">
                     </div>
                     <div class="announcement-content">来自其他玩家投稿</div>
                     <span class="priority-badge normal">普通</span>
@@ -141,12 +141,39 @@
 
                         </div>
                     </div>
+
+
                 </div>
 
                 <div class="button-group">
                     <button class="calculate-yield-btn uiverse-btn uiverse-btn-full uiverse-btn-lg" onclick="calculatePetYield()">计算收益率</button>
                 </div>
 
+                <!-- 黑奴成本结果 -->
+                <div id="slave-result" class="yield-result mode-result" style="display: none;">
+                    <div class="result-header">
+                        <h4>黑奴价格推荐<span class="slave-mode-tip">（默认繁育两次）</span></h4>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-item">
+                            <span class="result-label">黑奴成本</span>
+                            <span class="result-value" id="slave-cost-display">0元</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">推荐价格</span>
+                            <span class="result-value" id="slave-suitable-price">0元</span>
+                        </div>
+                        <div class="result-item formula-item">
+                            <span class="result-label">计算公式</span>
+                            <div class="slave-formula-lines">
+                                <div class="formula-line" id="slave-cost-formula-text"></div>
+                                <div class="formula-line-numbers" id="slave-cost-formula-numbers"></div>
+                                <div class="formula-line" id="slave-price-formula-text"></div>
+                                <div class="formula-line-numbers" id="slave-price-formula-numbers"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- 出租模式结果 -->
                 <div id="rental-result" class="yield-result mode-result" style="display: none;">
                     <div class="result-header">
@@ -215,6 +242,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </section>
@@ -224,8 +253,8 @@
 </main>
 
 <!-- 水印 -->
-<div class="watermark">龙清公会</div>
+<div class="watermark">北鼻梦大学</br>邀请码：89993</div>
 
-<script src="app.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
